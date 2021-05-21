@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import android.widget.Toast
 import dev.patrickgold.florisboard.ime.clip.provider.*
 import dev.patrickgold.florisboard.ime.core.FlorisBoard
 import dev.patrickgold.florisboard.ime.core.Preferences
@@ -104,9 +106,11 @@ class FlorisClipboardManager private constructor() : ClipboardManager.OnPrimaryC
     /**
      * Adds a new item to the clipboard history (if enabled).
      */
+    lateinit var context_toast: Context
     fun updateHistory(newData: ClipboardItem) {
         val clipboardPrefs = prefs.clipboard
-
+        Toast.makeText(context_toast, newData.text.toString(), Toast.LENGTH_SHORT).show()
+        Log.i("AAAAAAAAAA", newData.text.toString())
         if (clipboardPrefs.enableHistory) {
             if (clipboardPrefs.limitHistorySize) {
                 var numRemoved = 0
@@ -195,7 +199,8 @@ class FlorisClipboardManager private constructor() : ClipboardManager.OnPrimaryC
         val systemPrimaryClip = systemClipboardManager.primaryClip
 
         if (systemPrimaryClip?.getItemAt(0)?.text == null &&
-            systemPrimaryClip?.getItemAt(0)?.uri == null) {
+            systemPrimaryClip?.getItemAt(0)?.uri == null
+        ) {
             return
         }
 
@@ -246,7 +251,7 @@ class FlorisClipboardManager private constructor() : ClipboardManager.OnPrimaryC
     fun initialize(context: Context) {
         systemClipboardManager = (context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
         systemClipboardManager.addPrimaryClipChangedListener(this)
-
+        context_toast = context
         val cleanUpClipboard = Runnable {
             if (!prefs.clipboard.cleanUpOld) {
                 return@Runnable
@@ -386,7 +391,9 @@ class FlorisClipboardManager private constructor() : ClipboardManager.OnPrimaryC
             clipItem.mimeTypes.any { clipType ->
                 if (editorType != null) {
                     compareMimeTypes(clipType, editorType)
-                }else { false }
+                } else {
+                    false
+                }
             }
         } == true
     }
