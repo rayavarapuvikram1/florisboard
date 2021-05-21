@@ -103,6 +103,8 @@ android {
 
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:28.0.1"))
+    implementation ("com.google.firebase:firebase-analytics-ktx")
     implementation("androidx.activity", "activity-ktx", "1.2.1")
     implementation("androidx.appcompat", "appcompat", "1.2.0")
     implementation("androidx.autofill", "autofill", "1.1.0")

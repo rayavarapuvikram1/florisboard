@@ -1,5 +1,6 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-
+/* follow this for kotlin dsl
+https://docs.gradle.org/current/userguide/kotlin_dsl.html */
 plugins {
     id("com.github.ben-manes.versions") version "0.36.0"
     base // adds clean task to root project
